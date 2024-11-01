@@ -13,7 +13,7 @@ const QueryComponent = ({ responses, handleReset }: { responses: DocumentSection
             </CardHeader>
             <CardContent className="space-y-4">
               {responses.map((section, index) => (
-                <ResultItem key={index} index={index} section={section}/>
+                <ResultItem key={index} section={section}/>
               ))}
 
               <div className="flex justify-center pt-2">

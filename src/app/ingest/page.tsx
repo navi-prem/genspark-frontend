@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Upload, X, FileText, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { API_URL } from '@/libs/utils';
 
 const UploadDocument = () => {
   const [fileName, setFileName] = useState<string>('');
@@ -24,17 +25,19 @@ const UploadDocument = () => {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('key', 'kb');
 
-    // try {
-    //   const response = await fetch('/api/upload', {
-    //     method: 'POST',
-    //     body: formData,
-    //   });
-    //   if (!response.ok) throw new Error('Upload failed');
-    // } catch (error) {
-    //   console.error('Upload error:', error);
-    //   return;
-    // }
+    try {
+      const response = await fetch(API_URL + '/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) throw new Error('Upload failed');
+    console.log(response)
+    } catch (error) {
+      console.error('Upload error:', error);
+      return;
+    }
     
     setIsUploading(false);
     setUploadComplete(true);

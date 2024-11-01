@@ -1,32 +1,20 @@
+import { API_URL } from '@/libs/utils';
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-const useDashboard = (url: string) => {
-  const [data, setData] = useState<{ title: string; status: boolean }[]>([]);
+const useDashboard = (key: string) => {
+  const [data, setData] = useState<{ blob_key: string, name: string, res_key: string | null, status: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const response = await fetch(url);
-    //   const result = await response.json();
-    //   setData(result);
-    //   setLoading(false);
-    // };
-
     const fetchData = async () => {
-      setLoading(true);
-      setTimeout(() => {
-        const dummyData = [
-            { title: "Property Document", status: true },
-            { title: "Income Tax Document", status: false },
-            { title: "Birth Certificate", status: true },
-        ];
-        setData(dummyData);
-        setLoading(false);
-      }, 2000);
-    }
+      let { data: { message: { data } } } = await axios.get(API_URL + `getAll?key=${key}`);
+      setData(data);
+      setLoading(false);
+    };
 
     fetchData();
-  }, [url]);
+  }, []);
 
   return { data, loading };
 };

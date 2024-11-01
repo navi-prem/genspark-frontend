@@ -2,15 +2,15 @@
 import { useState } from 'react';
 import { Upload, X, FileText, Check, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DocumentSection } from '@/libs/types';
-import { QueryComponent } from '@/components';
+import { useRouter } from 'next/navigation';
+import { API_URL } from '@/libs/utils';
 
 const UploadDocument = () => {
+  const router = useRouter();
   const [fileName, setFileName] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
-  const [responses, setResponses] = useState<DocumentSection[]>([]);
   const [tags, setTags] = useState<{ [key: string]: string }>({});
   const [newKey, setNewKey] = useState('');
   const [newValue, setNewValue] = useState('');
@@ -21,7 +21,6 @@ const UploadDocument = () => {
       setFile(selectedFile);
       setFileName(selectedFile.name);
       setUploadComplete(false);
-      setResponses([]);
       setTags({});
     }
   };
@@ -51,71 +50,41 @@ const UploadDocument = () => {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('key', 'rag');
     formData.append('tags', JSON.stringify(tags));
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch(API_URL + 'upload', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) throw new Error('Upload failed');
+      setIsUploading(false);
+      setUploadComplete(true);
+      setFile(null);
+      setFileName('');
+      setTags({});
 
-    const dummyResponse: DocumentSection[] = [
-      {
-        title: "Introduction",
-        status: true,
-        reason: "The introduction section follows the standard format and includes all required elements."
-      },
-      {
-        title: "Methodology",
-        status: false,
-        reason: "Missing key experimental procedures and control group details."
-      },
-      {
-        title: "Results",
-        status: true,
-        reason: "Data presentation is clear and well-structured with appropriate statistical analysis."
-      },
-      {
-        title: "Discussion",
-        status: true,
-        reason: "Comprehensive analysis of findings with relevant literature citations."
-      },
-      {
-        title: "References",
-        status: false,
-        reason: "Several citations are incomplete or do not follow the required format."
-      }
-    ];
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-    setResponses(dummyResponse);
-    setIsUploading(false);
-    setUploadComplete(true);
-    setFile(null);
-    setFileName('');
-    setTags({});
+      router.push('/dashboard/rag');
 
-    // try {
-    //   const response = await fetch('/api/upload', {
-    //     method: 'POST',
-    //     body: formData,
-    //   });
-    //   if (!response.ok) throw new Error('Upload failed');
-    //   
-    //   const data: DocumentSection[] = await response.json();
-    //   setResponses(data);
-    // } catch (error) {
-    //   console.error('Upload error:', error);
-    //   return;
-    // } finally {
-    //   setIsUploading(false);
-    //   setUploadComplete(true);
-    //   setFile(null);
-    //   setFileName('');
-    //   setTags({});
-    // }
+    } catch (error) {
+      console.error('Upload error:', error, 'Kindly refresh the page.');
+      return;
+    } finally {
+      setIsUploading(false);
+      setUploadComplete(true);
+      setFile(null);
+      setFileName('');
+      setTags({});
+    }
   };
 
   const handleReset = () => {
     setFile(null);
     setFileName('');
     setUploadComplete(false);
-    setResponses([]);
     setTags({});
     setNewKey('');
     setNewValue('');
@@ -262,10 +231,6 @@ const UploadDocument = () => {
             </div>
           </CardContent>
         </Card>
-
-        {responses.length > 0 && (
-          <QueryComponent responses={responses} handleReset={handleReset}/>
-        )}
       </div>
     </main>
   );

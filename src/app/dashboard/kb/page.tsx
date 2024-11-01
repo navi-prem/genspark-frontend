@@ -5,13 +5,13 @@ import { TaskArray } from "@/libs/types";
 import { useState, useEffect } from 'react';
 
 const Dashboard = () => {
-    const { data, loading }: { data: TaskArray; loading: boolean } = useDashboard("");
+    const { data, loading }: { data: TaskArray; loading: boolean } = useDashboard('kb');
     const [loader, setLoader] = useState("Loading");
 
   useEffect(() => {
     const interval = setInterval(() => {
       setLoader(prev => {
-        if (prev.length < 13) {
+        if (prev.length < 10) {
           return prev + ".";
         }
         return "Loading";
