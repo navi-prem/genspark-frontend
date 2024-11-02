@@ -28,25 +28,28 @@ const NavBar = () => {
 			>
 				<div className="p-4 cursor-pointer text-black" onClick={handleToggle}>
 					{toggleState ? (
-						<span className="text-3xl">&#8594;</span>
+						<span className="text-3xl font-bold">☰</span>
 					) : (
-						<span className="text-3xl">&#8592;</span>
+						<span className="text-3xl font-bold">☰</span>
 					)}
 				</div>
 
 				{toggleState && (
-					<ul className="text-[75px] gap-10 flex flex-col font-bold text-center mt-10">
+					<ul className="text-[50px] gap-10 flex flex-col font-bold text-center mt-10">
+                        <li className="hover:underline">
+                            <Link href="/">HOME</Link>
+                        </li>
 						<li className="hover:underline">
-							<Link href="/dashboard/kb">KB</Link>
+							<Link href="/ingest">KB UPLOAD</Link>
 						</li>
 						<li className="hover:underline">
-							<Link href="/dashboard/rag">RAG</Link>
+							<Link href="/dashboard/kb">KB INGESTION</Link>
 						</li>
 						<li className="hover:underline">
-							<Link href="/query">QUERY</Link>
+							<Link href="/dashboard/rag">VALIDATION DOC UPLOAD</Link>
 						</li>
 						<li className="hover:underline">
-							<Link href="/ingest">INGEST</Link>
+							<Link href="/query">START VALIDATION</Link>
 						</li>
 					</ul>
 				)}
