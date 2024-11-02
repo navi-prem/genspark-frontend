@@ -21,7 +21,7 @@ const NavBar = () => {
 			)}
 
 			<motion.nav
-				className={`fixed top-0 right-0 h-screen bg-white z-20 ${toggleState ? "w-1/5" : "w-16"} shadow-lg`}
+				className={`fixed top-0 right-0 h-screen bg-white z-20 ${toggleState ? "w-1/5 shadow-lg" : "w-16 bg-opacity-0"}`}
 				initial={{ width: toggleState ? "4rem" : "20%" }}
 				animate={{ width: toggleState ? "20%" : "4rem" }}
 				transition={{ duration: 0.3 }}
