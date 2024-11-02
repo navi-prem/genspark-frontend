@@ -24,7 +24,7 @@ jobs:
 
       - name: 'Install Dependencies and Build'
         run: |
-          npm install --force
+          npm install --legacy-peer-deps
           npm install pm2 -g  # Install PM2 globally
           npm run build
 
@@ -56,9 +56,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_71106CE8E4EA4592BE4083CA630E6B00 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E784B61D06E646C1BFB3F5BFD73F4810 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_40435711688744028196A58436B8B90A }}
 
       - name: Run Azure Functions Action
         uses: Azure/functions-action@v1
