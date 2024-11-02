@@ -19,7 +19,7 @@ return (
         </div>
         <div className="flex-1 space-y-2">
           <h3 className="font-semibold text-gray-900">
-            {section.reason}{section.status}
+            {section.reason != "none"? section.reason : ""}
           </h3>
           <Alert variant={section.status ? "default" : "destructive"}>
             <AlertDescription>

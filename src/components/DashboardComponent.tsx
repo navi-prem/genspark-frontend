@@ -1,6 +1,6 @@
 import { DocumentSection, TaskArray } from "@/libs/types";
 import TaskItem from "./TaskItem";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { QueryComponent } from '@/components';
 
 const DashboardComponent = ({ data }: { data: TaskArray }) => {

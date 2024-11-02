@@ -19,7 +19,7 @@ const Dashboard = () => {
     }, 500);
 
     return () => clearInterval(interval);
-  }, []);
+  });
 
     if (loading) return (
         <main className="relative justify-center flex min-h-screen flex-col bg-[#f9fbfa] p-4">

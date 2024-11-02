@@ -8,13 +8,13 @@ const useDashboard = (key: string) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let { data: { message: { data } } } = await axios.get(API_URL + `getAll?key=${key}`);
+      const { data: { message: { data } } } = await axios.get(API_URL + `getAll?key=${key}`);
       setData(data);
       setLoading(false);
     };
 
     fetchData();
-  }, []);
+  });
 
   return { data, loading };
 };
