@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js project to Azure Function App - tusk
 
 on:
@@ -7,8 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # Set this to the path with the static files
-  NODE_VERSION: '20.x'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '20.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
 
 jobs:
   build:
@@ -26,7 +29,7 @@ jobs:
         shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          npm install --force
+          npm install
           npm run build --if-present
           npm run test --if-present
           npm i pm2 -g
@@ -41,13 +44,12 @@ jobs:
           name: node-app
           path: release.zip
 
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
     
     permissions:
-      id-token: write
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -57,21 +59,21 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_71106CE8E4EA4592BE4083CA630E6B00 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E784B61D06E646C1BFB3F5BFD73F4810 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_40435711688744028196A58436B8B90A }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9784CC6BBCEC4A20ADFCA4D86958B260 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A364793E229C47849CE215151B4CF927 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_73F3BBB3671B41CD869BAC37E1C6506F }}
 
-      - name: Run Azure Functions Action
+      - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
           app-name: 'tusk'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-      
+          
       - name: Start Application with PM2
         run: pm2 serve /home/site/wwwroot/out --no-daemon --spa
