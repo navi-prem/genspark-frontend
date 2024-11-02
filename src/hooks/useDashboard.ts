@@ -14,7 +14,7 @@ const useDashboard = (key: string) => {
     };
 
     fetchData();
-  });
+  }, []);
 
   return { data, loading };
 };
